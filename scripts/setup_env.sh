@@ -44,20 +44,20 @@ chmod +x solana-install-init-x86_64-unknown-linux-gnu
 
 git clone https://github.com/project-serum/serum-dex.git
 # grab path for sdk and solana
-PATH=$PATH:/root/.local/share/solana/install/active_release/bin/
+PATH=$PATH:${HOME}/.local/share/solana/install/active_release/bin/
 
 # swap out the ancient version of bpf-rust to use up-to-date one
-sed -ibak 's/version=v1.5/version=v1.13/g' /root/.local/share/solana/install/active_release/bin/sdk/bpf/scripts/install.sh
+sed -ibak 's/version=v1.5/version=v1.13/g' "${HOME}/.local/share/solana/install/active_release/bin/sdk/bpf/scripts/install.sh"
 
 # build the dex with the bpf-rust toolchain
-cd serum-dex/dex
+cd "${INSTALL_LOCATION}/serum-dex/dex"
 cargo-build-bpf
 
 # build crank with the default non-bpf keychain
-cd crank
+cd "${INSTALL_LOCATION}/serum-dex/dex/crank"
 cargo build --release
 
-cp -a /opt/src/serum-dex/target/release/crank /usr/local/bin
+cp -a "${INSTALL_LOCATION}/serum-dex/target/release/crank" /usr/local/bin
 cp -a "${INSTALL_LOCATION}/serum-dex/dex/target/deploy/serum_dex.so" "${INSTALL_LOCATION}"
 
 solana config set --url "http://127.0.0.1:8899"
