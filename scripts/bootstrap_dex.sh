@@ -23,7 +23,6 @@ if [ ! -f "${DATA_LOCATION}/.bootstrapped" ]; then
     sleep 2
 
     solana airdrop 10000
-    tail -F "${DATA_LOCATION}/ledger/validator.log"
 
     solana deploy "${INSTALL_LOCATION}"/serum_dex.so --output json-compact | jq .programId -r >"${DATA_LOCATION}/dex_program_id"
 
