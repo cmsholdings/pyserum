@@ -3,7 +3,7 @@ services:
   localnet:
     build: .
     volumes: 
-      - "./data-vol:/data"
+      - "./data-vol:/data:Z"
     ports:
       - "8000:8011"
       - "8899:8899"

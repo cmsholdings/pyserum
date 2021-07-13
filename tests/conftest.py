@@ -1,5 +1,5 @@
 from typing import Dict
-
+import json
 import pytest
 from solana.account import Account
 from solana.publickey import PublicKey
@@ -34,28 +34,29 @@ def __bootstrap_account(pubkey: str, secretkey: str) -> Account:
 @pytest.fixture(scope="session")
 def stubbed_dex_program_pk(__bs_params) -> PublicKey:
     """Bootstrapped dex program id."""
-    return PublicKey(__bs_params["dex_program_id"])
+    with open("data-vol/dex_program_id") as dex_program_id_file:
+        return PublicKey(dex_program_id_file.read())
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_payer(__bs_params) -> Account:
     """Bootstrapped payer account."""
-    return __bootstrap_account(__bs_params["payer"], __bs_params["payer_secret"])
+    return Account(json.load(open("data-vol/user_account.json"))[:32])
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_base_mint(__bs_params) -> Account:
     """Bootstrapped base mint account."""
-    return __bootstrap_account(__bs_params["coin_mint"], __bs_params["coin_mint_secret"])
+    return Account(json.load(open("data-vol/coin_mint.json"))[:32])
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_quote_mint(__bs_params) -> Account:
     """Bootstrapped quote mint account."""
-    return __bootstrap_account(__bs_params["pc_mint"], __bs_params["pc_mint_secret"])
+    return Account(json.load(open("data-vol/pc_mint.json"))[:32])
 
 
 @pytest.mark.integration

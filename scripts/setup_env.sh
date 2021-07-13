@@ -45,7 +45,8 @@ chmod +x solana-install-init-x86_64-unknown-linux-gnu
 git clone https://github.com/project-serum/serum-dex.git
 # grab path for sdk and solana
 PATH=$PATH:/root/.local/share/solana/install/active_release/bin/
-# swap out the old version of bpf-rust to use modern one
+
+# swap out the ancient version of bpf-rust to use up-to-date one
 sed -ibak 's/version=v1.5/version=v1.13/g' /root/.local/share/solana/install/active_release/bin/sdk/bpf/scripts/install.sh
 
 # build the dex with the bpf-rust toolchain

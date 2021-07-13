@@ -12,7 +12,7 @@ setup(
         "construct>=2.10.56, <3.0.0",
         "solana>=0.3.0, <1.0.0",
     ],
-    python_requires=">=3.7, <4",
+    python_requires=">=3.8, <4",
     license="MIT",
     package_data={"pyserum": ["py.typed"]},
     packages=find_packages(exclude=("tests", "tests.*")),
@@ -23,7 +23,7 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
 )

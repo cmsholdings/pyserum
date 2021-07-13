@@ -1,4 +1,4 @@
-from construct import BitsInteger, BitsSwapped, BitStruct, Const, Flag  # type: ignore
+from construct import BitsInteger, BitsSwapped, BitStruct, Const, Padding, Flag  # type: ignore
 
 # We will use a bitstruct with 64 bits instead of the widebits implementation in serum-js.
 SERUM_ACCOUNT_FLAGS_LAYOUT = BitsSwapped(  # Swap to little endian
@@ -13,4 +13,8 @@ SERUM_ACCOUNT_FLAGS_LAYOUT = BitsSwapped(  # Swap to little endian
         "disabled" / Flag,
         Const(0, BitsInteger(56)),  # Padding
     )
+)
+
+MANGO_ACCOUNT_FLAGS = BitsSwapped(
+    BitStruct("initialized" / Flag, "group" / Flag, "margin_account" / Flag, "srm_account" / Flag, Padding(4 + (7 * 8)))
 )
