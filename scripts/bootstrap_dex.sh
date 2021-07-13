@@ -6,6 +6,11 @@ DATA_LOCATION=${DATA_LOCATION:-"/data"}
 # shellcheck disable=SC1091
 source "${HOME}/.bash_profile"
 
+# helper func to parse output from market listing
+parse_market_list_result() {
+    "${DATA_LOCATION}/list_market_result" | grep "$1" | sed s/"    $1: "//g | sed s/,//g >"${DATA_LOCATION}"/"${1}"_addr
+}
+
 solana-test-validator --ledger "${DATA_LOCATION}/ledger" &
 
 if [ ! -f "${DATA_LOCATION}/.bootstrapped" ]; then
@@ -38,10 +43,13 @@ if [ ! -f "${DATA_LOCATION}/.bootstrapped" ]; then
 
     crank localnet mint --payer "${DATA_LOCATION}"/user_account.json --signer "${DATA_LOCATION}"/user_account.json --mint-pubkey "$(solana address -k "${DATA_LOCATION}/pc_mint.json")" --quantity 1000000000000000 >"${DATA_LOCATION}"/pc_wallet_output.txt
 
-    # crank localnet print-event-queue "${DEX_PROGRAM_ID}" ""
+    for addr_name in market req_q event_q bids asks coin_vault pc_vault vault_signer_key; do
+        parse_market_list_result ${addr_name}
+    done
 
     echo "dex_program_id: ${DEX_PROGRAM_ID}" >>crank.log
-    mv crank.log tests/crank.log
+    cp crank.log "${DATA_LOCATION}"/crank.log
     touch "${DATA_LOCATION}"/.bootstrapped
 fi
-tail -f tests/crank.log
+
+tail -f "${DATA_LOCATION}"/crank.log

@@ -77,56 +77,56 @@ def stubbed_quote_wallet(__bs_params) -> Account:
 @pytest.fixture(scope="session")
 def stubbed_market_pk(__bs_params) -> PublicKey:
     """Public key of the boostrapped market."""
-    return PublicKey(__bs_params["market"])
+    return PublicKey(json.load(open("data-vol/market_addr")))
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_req_q_pk(__bs_params) -> PublicKey:
     """Public key of the bootstrapped request queue."""
-    return PublicKey(__bs_params["req_q"])
+    return Account(json.load(open("data-vol/req_q_addr")))
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_event_q_pk(__bs_params) -> PublicKey:
     """Public key of the bootstrapped request queue."""
-    return PublicKey(__bs_params["event_q"])
+    return PublicKey(json.load(open("data-vol/event_q_addr")))
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_bids_pk(__bs_params) -> PublicKey:
     """Public key of the bootstrapped bids book."""
-    return PublicKey(__bs_params["bids"])
+    return PublicKey(json.load(open("data-vol/bids_addr")))
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_asks_pk(__bs_params) -> PublicKey:
     """Public key of the bootstrapped asks book."""
-    return PublicKey(__bs_params["asks"])
+    return PublicKey(json.load(open("data-vol/asks_addr")))
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_base_vault_pk(__bs_params) -> PublicKey:
     """Public key of the base vault account."""
-    return PublicKey(__bs_params["coin_vault"])
+    return PublicKey(json.load(open("data-vol/coin_vault_addr")))
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_quote_vault_pk(__bs_params) -> PublicKey:
     """Public key of the quote vault account."""
-    return PublicKey(__bs_params["pc_vault"])
+    return PublicKey(json.load(open("data-vol/pc_vault_addr")))
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_vault_signer_pk(__bs_params) -> PublicKey:
     """Public key of the bootstrapped vault signer."""
-    return PublicKey(__bs_params["vault_signer_key"])
+    return PublicKey(json.load(open("data-vol/vault_signer_key_addr")))
 
 
 @pytest.mark.integration
