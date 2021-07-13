@@ -7,7 +7,7 @@ from construct import Switch  # type: ignore
 from construct import Bytes, Int8ul, Int32ul, Int64ul, Padding
 from construct import Struct as cStruct
 
-from .account_flags import ACCOUNT_FLAGS_LAYOUT
+from .account_flags import SERUM_ACCOUNT_FLAGS_LAYOUT
 
 KEY = Bytes(16)
 
@@ -63,4 +63,6 @@ SLAB_NODE_LAYOUT = cStruct(
 
 SLAB_LAYOUT = cStruct("header" / SLAB_HEADER_LAYOUT, "nodes" / SLAB_NODE_LAYOUT[lambda this: this.header.bump_index])
 
-ORDER_BOOK_LAYOUT = cStruct(Padding(5), "account_flags" / ACCOUNT_FLAGS_LAYOUT, "slab_layout" / SLAB_LAYOUT, Padding(7))
+ORDER_BOOK_LAYOUT = cStruct(
+    Padding(5), "account_flags" / SERUM_ACCOUNT_FLAGS_LAYOUT, "slab_layout" / SLAB_LAYOUT, Padding(7)
+)

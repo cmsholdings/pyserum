@@ -27,3 +27,12 @@ class SelfTradeBehavior(IntEnum):
     DECREMENT_TAKE = 0
     CANCEL_PROVIDE = 1
     ABORT_TRANSACTION = 2
+
+
+class Version(IntEnum):
+    UNSPECIFIED = 0
+    V1 = 1
+    V2 = 2
+    V3 = 3
+    V4 = 4
+    V5 = 5

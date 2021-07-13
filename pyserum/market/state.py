@@ -29,7 +29,7 @@ class MarketState:  # pylint: disable=too-many-public-methods
 
     @staticmethod
     def load(conn: Client, market_address: PublicKey, program_id: PublicKey) -> MarketState:
-        bytes_data = load_bytes_data(market_address, conn)
+        bytes_data = load_bytes_data(conn=conn, addr=market_address)
         parsed_market = MARKET_LAYOUT.parse(bytes_data)
         # TODO: add ownAddress check!
 

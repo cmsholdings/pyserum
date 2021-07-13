@@ -11,7 +11,7 @@ from ._layouts.instructions import INSTRUCTIONS_LAYOUT, InstructionType
 from .enums import OrderType, SelfTradeBehavior, Side
 
 # V3
-DEFAULT_DEX_PROGRAM_ID = PublicKey("9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin")
+SERUM_V3_DEX_PROGRAM_ID = PublicKey("9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin")
 
 
 class InitializeMarketParams(NamedTuple):
@@ -45,7 +45,7 @@ class InitializeMarketParams(NamedTuple):
     """"""
     quote_dust_threshold: int
     """"""
-    program_id: PublicKey = DEFAULT_DEX_PROGRAM_ID
+    program_id: PublicKey = SERUM_V3_DEX_PROGRAM_ID
 
 
 class NewOrderParams(NamedTuple):
@@ -75,7 +75,7 @@ class NewOrderParams(NamedTuple):
     """"""
     client_id: int = 0
     """"""
-    program_id: PublicKey = DEFAULT_DEX_PROGRAM_ID
+    program_id: PublicKey = SERUM_V3_DEX_PROGRAM_ID
     """"""
 
 
@@ -98,7 +98,7 @@ class MatchOrdersParams(NamedTuple):
     """"""
     limit: int
     """"""
-    program_id: PublicKey = DEFAULT_DEX_PROGRAM_ID
+    program_id: PublicKey = SERUM_V3_DEX_PROGRAM_ID
     """"""
 
 
@@ -113,7 +113,7 @@ class ConsumeEventsParams(NamedTuple):
     """"""
     limit: int
     """"""
-    program_id: PublicKey = DEFAULT_DEX_PROGRAM_ID
+    program_id: PublicKey = SERUM_V3_DEX_PROGRAM_ID
     """"""
 
 
@@ -134,7 +134,7 @@ class CancelOrderParams(NamedTuple):
     """"""
     open_orders_slot: int
     """"""
-    program_id: PublicKey = DEFAULT_DEX_PROGRAM_ID
+    program_id: PublicKey = SERUM_V3_DEX_PROGRAM_ID
     """"""
 
 
@@ -151,7 +151,7 @@ class CancelOrderByClientIDParams(NamedTuple):
     """"""
     client_id: int
     """"""
-    program_id: PublicKey = DEFAULT_DEX_PROGRAM_ID
+    program_id: PublicKey = SERUM_V3_DEX_PROGRAM_ID
     """"""
 
 
@@ -174,7 +174,7 @@ class SettleFundsParams(NamedTuple):
     """"""
     vault_signer: PublicKey
     """"""
-    program_id: PublicKey = DEFAULT_DEX_PROGRAM_ID
+    program_id: PublicKey = SERUM_V3_DEX_PROGRAM_ID
 
 
 class NewOrderV3Params(NamedTuple):
@@ -216,7 +216,7 @@ class NewOrderV3Params(NamedTuple):
     """"""
     client_id: int = 0
     """"""
-    program_id: PublicKey = DEFAULT_DEX_PROGRAM_ID
+    program_id: PublicKey = SERUM_V3_DEX_PROGRAM_ID
     """"""
     fee_discount_pubkey: Optional[PublicKey] = None
 
@@ -242,7 +242,7 @@ class CancelOrderV2Params(NamedTuple):
     """"""
     open_orders_slot: int
     """"""
-    program_id: PublicKey = DEFAULT_DEX_PROGRAM_ID
+    program_id: PublicKey = SERUM_V3_DEX_PROGRAM_ID
     """"""
 
 
@@ -263,7 +263,7 @@ class CancelOrderByClientIDV2Params(NamedTuple):
     """"""
     client_id: int
     """"""
-    program_id: PublicKey = DEFAULT_DEX_PROGRAM_ID
+    program_id: PublicKey = SERUM_V3_DEX_PROGRAM_ID
     """"""
 
 

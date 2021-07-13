@@ -45,7 +45,7 @@ class Market:
     def load(
         conn: Client,
         market_address: PublicKey,
-        program_id: PublicKey = instructions.DEFAULT_DEX_PROGRAM_ID,
+        program_id: PublicKey = instructions.SERUM_V3_DEX_PROGRAM_ID,
         force_use_request_queue: bool = False,
     ) -> Market:
         """Factory method to create a Market.
@@ -81,14 +81,14 @@ class Market:
 
     def find_open_orders_accounts_for_owner(self, owner_address: PublicKey) -> List[OpenOrdersAccount]:
         return OpenOrdersAccount.find_for_market_and_owner(
-            self._conn, self.state.public_key(), owner_address, self.state.program_id()
+            conn=self._conn, market=self.state.public_key(), owner=owner_address, program_id=self.state.program_id()
         )
 
     def find_quote_token_accounts_for_owner(self, owner_address: PublicKey, include_unwrapped_sol: bool = False):
         raise NotImplementedError("find_quote_token_accounts_for_owner not implemented")
 
     def load_bids(self) -> OrderBook:
-        """Load the bid order book"""
+        """Load the bid order book."""
         bytes_data = load_bytes_data(self.state.bids(), self._conn)
         return OrderBook.from_bytes(self.state, bytes_data)
 
@@ -114,9 +114,10 @@ class Market:
         raise NotImplementedError("load_base_token_for_owner not implemented")
 
     def load_event_queue(self) -> List[t.Event]:
-        """Load the event queue which includes the fill item and out item. For any trades two fill items are added to
-        the event queue. And in case of a trade, cancel or IOC order that missed, out items are added to the event
-        queue.
+        """Load the event queue which includes the fill item and out item.
+
+        For any trades two fill items are added to the event queue. And in case of a trade,
+        cancel or IOC order that missed, out items are added to the event queue.
         """
         bytes_data = load_bytes_data(self.state.event_queue(), self._conn)
         return decode_event_queue(bytes_data)
@@ -192,7 +193,7 @@ class Market:
             signers.append(new_open_orders_account)
             # TODO: Cache new_open_orders_account
         else:
-            place_order_open_order_account = open_order_accounts[0].address
+            place_order_open_order_account = open_order_accounts[0].account_info.address
         # TODO: Handle fee_discount_pubkey
 
         # unwrapped SOL cannot be used for payment

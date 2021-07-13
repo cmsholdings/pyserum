@@ -4,7 +4,7 @@ from typing import NamedTuple, Sequence
 
 from solana.publickey import PublicKey
 
-from .._layouts.account_flags import ACCOUNT_FLAGS_LAYOUT
+from .._layouts.account_flags import SERUM_ACCOUNT_FLAGS_LAYOUT
 from ..enums import Side
 
 
@@ -26,7 +26,7 @@ class AccountFlags(NamedTuple):
 
     @staticmethod
     def from_bytes(buffer: Sequence[int]) -> AccountFlags:
-        con = ACCOUNT_FLAGS_LAYOUT.parse(buffer)
+        con = SERUM_ACCOUNT_FLAGS_LAYOUT.parse(buffer)
         return AccountFlags(
             initialized=con.initialized,
             market=con.market,

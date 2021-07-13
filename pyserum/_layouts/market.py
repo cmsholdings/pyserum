@@ -1,11 +1,11 @@
 from construct import Bytes, Int8ul, Int64ul, Padding  # type: ignore
 from construct import Struct as cStruct  # type: ignore
 
-from .account_flags import ACCOUNT_FLAGS_LAYOUT
+from .account_flags import SERUM_ACCOUNT_FLAGS_LAYOUT
 
 MARKET_LAYOUT = cStruct(
     Padding(5),
-    "account_flags" / ACCOUNT_FLAGS_LAYOUT,
+    "account_flags" / SERUM_ACCOUNT_FLAGS_LAYOUT,
     "own_address" / Bytes(32),
     "vault_signer_nonce" / Int64ul,
     "base_mint" / Bytes(32),

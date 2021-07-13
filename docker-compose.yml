@@ -1,8 +1,11 @@
 version: '3'
 services:
   localnet:
-    image: "solanalabs/solana:v1.4.18"
+    build: .
+    volumes: 
+      - "./data-vol:/data"
     ports:
+      - "8000:8011"
       - "8899:8899"
       - "8900:8900"
       - "9900:9900"

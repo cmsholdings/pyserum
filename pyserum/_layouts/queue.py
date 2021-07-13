@@ -2,11 +2,11 @@ from construct import BitStruct  # type: ignore
 from construct import BitsInteger, BitsSwapped, Bytes, Const, Flag, Int8ul, Int32ul, Int64ul, Padding
 from construct import Struct as cStruct  # type: ignore
 
-from .account_flags import ACCOUNT_FLAGS_LAYOUT
+from .account_flags import SERUM_ACCOUNT_FLAGS_LAYOUT
 
 QUEUE_HEADER_LAYOUT = cStruct(
     Padding(5),
-    "account_flags" / ACCOUNT_FLAGS_LAYOUT,
+    "account_flags" / SERUM_ACCOUNT_FLAGS_LAYOUT,
     "head" / Int32ul,
     Padding(4),
     "count" / Int32ul,
