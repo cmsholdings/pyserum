@@ -8,7 +8,7 @@ source "${HOME}/.bash_profile"
 
 # helper func to parse output from market listing
 parse_market_list_result() {
-    "${DATA_LOCATION}/list_market_result" | grep "$1" | sed s/"    $1: "//g | sed s/,//g >"${DATA_LOCATION}"/"${1}"_addr
+    cat "${DATA_LOCATION}/list_market_result" | grep "$1" | sed s/"    $1: "//g | sed s/,//g >"${DATA_LOCATION}"/"${1}"_addr
 }
 
 solana-test-validator --ledger "${DATA_LOCATION}/ledger" &
@@ -34,13 +34,19 @@ if [ ! -f "${DATA_LOCATION}/.bootstrapped" ]; then
     DEX_PROGRAM_ID=$(cat "${DATA_LOCATION}"/dex_program_id)
     echo DEX_PROGRAM_ID: "${DEX_PROGRAM_ID}"
 
+    echo "Crank Genesis for coin mint.."
     crank localnet genesis --payer "${DATA_LOCATION}/user_account.json" --mint "${DATA_LOCATION}/coin_mint.json" --owner-pubkey "$(solana address -k "${DATA_LOCATION}"/user_account.json)" --decimals 6
+
+    echo "Crank Genesis for pc mint.."
     crank localnet genesis --payer "${DATA_LOCATION}/user_account.json" --mint "${DATA_LOCATION}/pc_mint.json" --owner-pubkey "$(solana address -k "${DATA_LOCATION}"/user_account.json)" --decimals 6
 
+    echo "Crank listing market.."
     crank localnet list-market "${DATA_LOCATION}"/user_account.json "${DEX_PROGRAM_ID}" --coin-mint "$(solana address -k "${DATA_LOCATION}"/coin_mint.json)" --pc-mint "$(solana address -k "${DATA_LOCATION}"/pc_mint.json)" >"${DATA_LOCATION}/list_market_result"
 
+    echo "Crank mint coin wallet.."
     crank localnet mint --payer "${DATA_LOCATION}"/user_account.json --signer "${DATA_LOCATION}"/user_account.json --mint-pubkey "$(solana address -k "${DATA_LOCATION}/coin_mint.json")" --quantity 1000000000000000 >"${DATA_LOCATION}"/coin_wallet_output.txt
 
+    echo "Crank mint pc wallet.."
     crank localnet mint --payer "${DATA_LOCATION}"/user_account.json --signer "${DATA_LOCATION}"/user_account.json --mint-pubkey "$(solana address -k "${DATA_LOCATION}/pc_mint.json")" --quantity 1000000000000000 >"${DATA_LOCATION}"/pc_wallet_output.txt
 
     for addr_name in market req_q event_q bids asks coin_vault pc_vault vault_signer_key; do
@@ -48,7 +54,7 @@ if [ ! -f "${DATA_LOCATION}/.bootstrapped" ]; then
     done
 
     echo "dex_program_id: ${DEX_PROGRAM_ID}" >>crank.log
-    cp crank.log "${DATA_LOCATION}"/crank.log
+
     touch "${DATA_LOCATION}"/.bootstrapped
 fi
 
