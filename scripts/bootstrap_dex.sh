@@ -8,7 +8,7 @@ source "${HOME}/.bash_profile"
 
 # helper func to parse output from market listing
 parse_market_list_result() {
-    cat "${DATA_LOCATION}/list_market_result" | grep "$1" | sed s/"    $1: "//g | sed s/,//g >"${DATA_LOCATION}"/"${1}"_addr
+    cat "${DATA_LOCATION}/list_market_result" | grep "$1:" | sed s/"    $1: "//g | sed s/,//g >"${DATA_LOCATION}"/"${1}"_addr
 }
 
 solana-test-validator --ledger "${DATA_LOCATION}/ledger" >"${DATA_LOCATION}/ledger.log" 2>&1 &
@@ -53,7 +53,11 @@ if [ ! -f "${DATA_LOCATION}/.bootstrapped" ]; then
         parse_market_list_result ${addr_name}
     done
 
-    echo "dex_program_id: ${DEX_PROGRAM_ID}" >>crank.log
+    spl-token accounts "$(solana address -k ${DATA_LOCATION}/coin_mint.json)" --verbose | awk 'FNR == 3 {print $1}' >"${DATA_LOCATION}"/coin_wallet_user_addr
+
+    spl-token accounts "$(solana address -k ${DATA_LOCATION}/pc_mint.json)" --verbose | awk 'FNR == 3 {print $1}' >"${DATA_LOCATION}"/pc_wallet_user_addr
+
+    echo "dex_program_id: ${DEX_PROGRAM_ID}" >crank.log
 
     touch "${DATA_LOCATION}"/.bootstrapped
 fi

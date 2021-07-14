@@ -42,21 +42,21 @@ def stubbed_dex_program_pk(__bs_params) -> PublicKey:
 @pytest.fixture(scope="session")
 def stubbed_payer(__bs_params) -> Account:
     """Bootstrapped payer account."""
-    return Account(json.load(open("data-vol/user_account.json"))[:32])
+    return Account(json.load(open("data-vol/user_account.json").read())[:32])
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_base_mint(__bs_params) -> Account:
     """Bootstrapped base mint account."""
-    return Account(json.load(open("data-vol/coin_mint.json"))[:32])
+    return Account(json.load(open("data-vol/coin_mint.json").read())[:32])
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_quote_mint(__bs_params) -> Account:
     """Bootstrapped quote mint account."""
-    return Account(json.load(open("data-vol/pc_mint.json"))[:32])
+    return Account(json.load(open("data-vol/pc_mint.json").read())[:32])
 
 
 @pytest.mark.integration
@@ -76,57 +76,57 @@ def stubbed_quote_wallet(__bs_params) -> Account:
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_market_pk(__bs_params) -> PublicKey:
-    """Public key of the boostrapped market."""
-    return PublicKey(json.load(open("data-vol/market_addr")))
+    """Public key of the bootstrapped market."""
+    return PublicKey(open("data-vol/market_addr").read())
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_req_q_pk(__bs_params) -> PublicKey:
     """Public key of the bootstrapped request queue."""
-    return Account(json.load(open("data-vol/req_q_addr")))
+    return Account(open("data-vol/req_q_addr").read())
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_event_q_pk(__bs_params) -> PublicKey:
     """Public key of the bootstrapped request queue."""
-    return PublicKey(json.load(open("data-vol/event_q_addr")))
+    return PublicKey(open("data-vol/event_q_addr").read())
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_bids_pk(__bs_params) -> PublicKey:
     """Public key of the bootstrapped bids book."""
-    return PublicKey(json.load(open("data-vol/bids_addr")))
+    return PublicKey(open("data-vol/bids_addr").read())
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_asks_pk(__bs_params) -> PublicKey:
     """Public key of the bootstrapped asks book."""
-    return PublicKey(json.load(open("data-vol/asks_addr")))
+    return PublicKey(open("data-vol/asks_addr").read())
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_base_vault_pk(__bs_params) -> PublicKey:
     """Public key of the base vault account."""
-    return PublicKey(json.load(open("data-vol/coin_vault_addr")))
+    return PublicKey(open("data-vol/coin_vault_addr").read())
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_quote_vault_pk(__bs_params) -> PublicKey:
     """Public key of the quote vault account."""
-    return PublicKey(json.load(open("data-vol/pc_vault_addr")))
+    return PublicKey(open("data-vol/pc_vault_addr").read())
 
 
 @pytest.mark.integration
 @pytest.fixture(scope="session")
 def stubbed_vault_signer_pk(__bs_params) -> PublicKey:
     """Public key of the bootstrapped vault signer."""
-    return PublicKey(json.load(open("data-vol/vault_signer_key_addr")))
+    return PublicKey(open("data-vol/vault_signer_key_addr").read())
 
 
 @pytest.mark.integration
