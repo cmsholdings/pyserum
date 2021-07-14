@@ -8,7 +8,11 @@ source "${HOME}/.bash_profile"
 
 # helper func to parse output from market listing
 parse_market_list_result() {
-    cat "${DATA_LOCATION}/list_market_result" | grep "$1:" | sed s/"    $1: "//g | sed s/,//g >"${DATA_LOCATION}"/"${1}"_addr
+    # first line is just a header like Listed market: MarketPubkeys { and last line is the losing bracket }
+    # get rid of both lines via awk, and the comma separation.
+    # each line we care about is of the form: 'name: value'
+    # so awk for the second value and put it in a file suffixed with _addr
+    cat "${DATA_LOCATION}/list_market_result" | awk 'NR>2 {print last} {last=$0}' | cut -d "," -f 1 | grep "$1:" | awk '{print $2}' >"${DATA_LOCATION}"/"${1}"_addr
 }
 
 solana-test-validator --ledger "${DATA_LOCATION}/ledger" >"${DATA_LOCATION}/ledger.log" 2>&1 &
@@ -62,4 +66,4 @@ if [ ! -f "${DATA_LOCATION}/.bootstrapped" ]; then
     touch "${DATA_LOCATION}"/.bootstrapped
 fi
 
-tail -f "${DATA_LOCATION}"/crank.log
+tail -f "${DATA_LOCATION}"/ledger.log

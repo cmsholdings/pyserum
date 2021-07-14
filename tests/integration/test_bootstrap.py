@@ -14,11 +14,6 @@ def test_base_mint(stubbed_base_mint):
 
 
 @pytest.mark.integration
-def test_base_wallet(stubbed_base_wallet):
-    assert isinstance(stubbed_base_wallet, Account)
-
-
-@pytest.mark.integration
 def test_base_vault_pk(stubbed_base_vault_pk):
     assert isinstance(stubbed_base_vault_pk, PublicKey)
 
@@ -26,11 +21,6 @@ def test_base_vault_pk(stubbed_base_vault_pk):
 @pytest.mark.integration
 def test_quote_mint(stubbed_quote_mint):
     assert isinstance(stubbed_quote_mint, Account)
-
-
-@pytest.mark.integration
-def test_quote_wallet(stubbed_quote_wallet):
-    assert isinstance(stubbed_quote_wallet, Account)
 
 
 @pytest.mark.integration
@@ -61,16 +51,6 @@ def test_bids_pk(stubbed_bids_pk):
 @pytest.mark.integration
 def test_asks_pk(stubbed_asks_pk):
     assert isinstance(stubbed_asks_pk, PublicKey)
-
-
-@pytest.mark.integration
-def test_bid_account_pk(stubbed_bid_account_pk):
-    assert isinstance(stubbed_bid_account_pk, PublicKey)
-
-
-@pytest.mark.integration
-def test_ask_account_pk(stubbed_ask_account_pk):
-    assert isinstance(stubbed_ask_account_pk, PublicKey)
 
 
 @pytest.mark.integration

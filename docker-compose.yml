@@ -9,3 +9,4 @@ services:
       - "8899:8899"
       - "8900:8900"
       - "9900:9900"
+    command: tail -f /dev/null

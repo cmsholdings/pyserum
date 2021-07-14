@@ -57,6 +57,7 @@ class Market:
         market_state = MarketState.load(conn, market_address, program_id)
         return Market(conn, market_state, force_use_request_queue)
 
+    # deprecated and unused. toDo: finish removing this cruft
     def _use_request_queue(self) -> bool:
         return (
             # DEX Version 1
@@ -89,12 +90,12 @@ class Market:
 
     def load_bids(self) -> OrderBook:
         """Load the bid order book."""
-        bytes_data = load_bytes_data(self.state.bids(), self._conn)
+        bytes_data = load_bytes_data(self._conn, self.state.bids())
         return OrderBook.from_bytes(self.state, bytes_data)
 
     def load_asks(self) -> OrderBook:
         """Load the ask order book."""
-        bytes_data = load_bytes_data(self.state.asks(), self._conn)
+        bytes_data = load_bytes_data(self._conn, self.state.asks())
         return OrderBook.from_bytes(self.state, bytes_data)
 
     def load_orders_for_owner(self, owner_address: PublicKey) -> List[t.Order]:
@@ -119,15 +120,15 @@ class Market:
         For any trades two fill items are added to the event queue. And in case of a trade,
         cancel or IOC order that missed, out items are added to the event queue.
         """
-        bytes_data = load_bytes_data(self.state.event_queue(), self._conn)
+        bytes_data = load_bytes_data(self._conn, self.state.event_queue())
         return decode_event_queue(bytes_data)
 
     def load_request_queue(self) -> List[t.Request]:
-        bytes_data = load_bytes_data(self.state.request_queue(), self._conn)
+        bytes_data = load_bytes_data(self._conn, self.state.request_queue())
         return decode_request_queue(bytes_data)
 
     def load_fills(self, limit=100) -> List[t.FilledOrder]:
-        bytes_data = load_bytes_data(self.state.event_queue(), self._conn)
+        bytes_data = load_bytes_data(self._conn, self.state.event_queue())
         events = decode_event_queue(bytes_data, limit)
         return [
             self.parse_fill_event(event)
@@ -292,24 +293,6 @@ class Market:
             raise Exception("Size lot %d is too small" % max_quantity)
         if self.state.price_number_to_lots(limit_price) < 0:
             raise Exception("Price lot %d is too small" % limit_price)
-        if self._use_request_queue():
-            return instructions.new_order(
-                instructions.NewOrderParams(
-                    market=self.state.public_key(),
-                    open_orders=open_order_account,
-                    payer=payer,
-                    owner=owner.public_key(),
-                    request_queue=self.state.request_queue(),
-                    base_vault=self.state.base_vault(),
-                    quote_vault=self.state.quote_vault(),
-                    side=side,
-                    limit_price=self.state.price_number_to_lots(limit_price),
-                    max_quantity=self.state.base_size_number_to_lots(max_quantity),
-                    order_type=order_type,
-                    client_id=client_id,
-                    program_id=self.state.program_id(),
-                )
-            )
         return instructions.new_order_v3(
             instructions.NewOrderV3Params(
                 market=self.state.public_key(),
@@ -507,7 +490,7 @@ class Market:
         return instructions.settle_funds(
             instructions.SettleFundsParams(
                 market=self.state.public_key(),
-                open_orders=open_orders_account.address,
+                open_orders=open_orders_account.account_info.address,
                 owner=open_orders_account.owner,
                 base_vault=self.state.base_vault(),
                 quote_vault=self.state.quote_vault(),

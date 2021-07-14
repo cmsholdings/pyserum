@@ -12,6 +12,7 @@ def default_flags():
         "event_queue": False,
         "bids": False,
         "asks": False,
+        "disabled": False,
     }
 
 
