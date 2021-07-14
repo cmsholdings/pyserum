@@ -11,7 +11,7 @@ parse_market_list_result() {
     cat "${DATA_LOCATION}/list_market_result" | grep "$1" | sed s/"    $1: "//g | sed s/,//g >"${DATA_LOCATION}"/"${1}"_addr
 }
 
-solana-test-validator --ledger "${DATA_LOCATION}/ledger" &
+solana-test-validator --ledger "${DATA_LOCATION}/ledger" >"${DATA_LOCATION}/ledger.log" 2>&1 &
 
 if [ ! -f "${DATA_LOCATION}/.bootstrapped" ]; then
     # make the keys on the shared volume if it doesnt exist. since its dev print the seeds in a separate file
