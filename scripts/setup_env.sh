@@ -4,7 +4,7 @@
 # this aims to be cross-compatible with baremetal, WSL, and docker/podman
 
 # version of sol bins to download
-SOLANA_VERSION=${SOLANA_VERSION:-"v1.1.16"}
+SOLANA_VERSION=${SOLANA_VERSION:-"v1.6.16"}
 
 # version of serum to build
 # issue: release has a bug, pull from master instead. ignoring for now..
@@ -19,6 +19,7 @@ dnf install -y \
     openssl-devel \
     llvm \
     net-tools \
+    procps-ng \
     zlib-devel \
     clang \
     make \
