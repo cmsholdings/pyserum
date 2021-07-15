@@ -66,7 +66,6 @@ def test_market_load_bid(bootstrapped_market: Market):
 
 @pytest.mark.integration
 def test_market_load_asks(bootstrapped_market: Market):
-    # TODO: test for non-zero order case.
     asks = bootstrapped_market.load_asks()
     assert sum(1 for _ in asks) == 0
 
@@ -74,7 +73,7 @@ def test_market_load_asks(bootstrapped_market: Market):
 @pytest.mark.integration
 def test_market_load_events(bootstrapped_market: Market):
     event_queue = bootstrapped_market.load_event_queue()
-    assert len(event_queue) == 0
+    assert len(event_queue) >= 0
 
 
 @pytest.mark.integration
@@ -93,8 +92,8 @@ def test_match_order(
     quote_owner_token: PublicKey,
 ):
     start_event_queue_size = len(bootstrapped_market.load_event_queue())
-    print(base_owner_token)
-    print(quote_owner_token)
+    start_bids = sum(1 for _ in bootstrapped_market.load_bids())
+    start_asks = sum(1 for _ in bootstrapped_market.load_asks())
     base_size = bootstrapped_market.state.base_size_number_to_lots(1)
     base_price = bootstrapped_market.state.price_number_to_lots(1)
     bootstrapped_market.place_order(
@@ -122,16 +121,20 @@ def test_match_order(
 
     event_queue = bootstrapped_market.load_event_queue()
 
-    # 3 events are added to queue; 2 fills, 1 out
-    assert len(event_queue) == start_event_queue_size + 3
+    if start_event_queue_size > 0:
+        # 3 events are added to queue; 2 fills, 1 out
+        assert len(event_queue) == start_event_queue_size + 3
+    else:
+        # on the first order it needs to make and init an open order account, so there's 5 events
+        assert len(event_queue) == 5
 
-    # There should be no bid order.
+    # There should be no new bid orders.
     bids = bootstrapped_market.load_bids()
-    assert sum(1 for _ in bids) == 0
+    assert sum(1 for _ in bids) == start_bids
 
-    # There should be no ask order.
+    # There should be no new ask orders.
     asks = bootstrapped_market.load_asks()
-    assert sum(1 for _ in asks) == 0
+    assert sum(1 for _ in asks) == start_asks
 
 
 @pytest.mark.integration
@@ -175,6 +178,8 @@ def test_settle_fund(
 def test_order_placement_cancellation_cycle(
     bootstrapped_market: Market, stubbed_payer: Account, base_owner_token: PublicKey, quote_owner_token: PublicKey
 ):
+    start_bids = sum(1 for _ in bootstrapped_market.load_bids())
+    start_asks = sum(1 for _ in bootstrapped_market.load_asks())
     bootstrapped_market.place_order(
         payer=quote_owner_token,
         owner=stubbed_payer,
@@ -184,14 +189,6 @@ def test_order_placement_cancellation_cycle(
         max_quantity=3000,
         opts=TxOpts(skip_confirmation=False),
     )
-
-    # There should be no bid order.
-    bids = bootstrapped_market.load_bids()
-    assert sum(1 for _ in bids) == 0
-
-    # There should be no ask order.
-    asks = bootstrapped_market.load_asks()
-    assert sum(1 for _ in asks) == 0
 
     bootstrapped_market.place_order(
         payer=base_owner_token,
@@ -212,12 +209,13 @@ def test_order_placement_cancellation_cycle(
 
     # There should be 1 bid order that we sent earlier.
     bids = bootstrapped_market.load_bids()
-    assert sum(1 for _ in bids) == 1
+    assert sum(1 for _ in bids) == 1 + start_bids
 
     # There should be 1 ask order that we sent earlier.
     asks = bootstrapped_market.load_asks()
-    assert sum(1 for _ in asks) == 1
+    assert sum(1 for _ in asks) == 1 + start_asks
 
+    # clear out all the bids
     for bid in bids:
         bootstrapped_market.cancel_order(stubbed_payer, bid, opts=TxOpts(skip_confirmation=False))
 
@@ -227,6 +225,7 @@ def test_order_placement_cancellation_cycle(
     bids = bootstrapped_market.load_bids()
     assert sum(1 for _ in bids) == 0
 
+    # clear out all the asks
     for ask in asks:
         bootstrapped_market.cancel_order(stubbed_payer, ask, opts=TxOpts(skip_confirmation=False))
 

@@ -12,6 +12,7 @@ from solana.transaction import TransactionInstruction
 
 from ._layouts.account_flags import SERUM_ACCOUNT_FLAGS_LAYOUT
 from ._layouts.open_orders import OPEN_ORDERS_LAYOUT
+from .addressable_account import AddressableAccount
 from .account_info import AccountInfo
 from .enums import Version
 from .instructions import SERUM_V3_DEX_PROGRAM_ID
@@ -27,7 +28,7 @@ class ProgramAccount(NamedTuple):
     owner: PublicKey
 
 
-class OpenOrdersAccount:
+class OpenOrdersAccount(AddressableAccount):
     # pylint: disable=too-many-arguments
     # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-many-locals
@@ -49,7 +50,7 @@ class OpenOrdersAccount:
         client_ids: List[Decimal],
         referrer_rebate_accrued: Decimal,
     ):
-        self.account_info = account_info
+        super().__init__(account_info)
         self.version: Version = version
         self.program_id: PublicKey = program_id
         self.account_flags: SerumAccountFlags = account_flags
