@@ -1,12 +1,11 @@
 import json
 import typing
-
 from decimal import Decimal
+
 from solana.publickey import PublicKey
 
 from .mango_market import Market, MarketLookup
 from .token import Token
-
 
 # # 🥭 SpotMarket class
 #

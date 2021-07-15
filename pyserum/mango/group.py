@@ -1,28 +1,26 @@
-from decimal import Decimal
 import time
 import typing
-import construct
+from decimal import Decimal
 
+import construct
 from solana.publickey import PublicKey
 from solana.rpc.api import Client
 from solana.rpc.commitment import Commitment
 
 from .._layouts.group import GROUP_V1, GROUP_V2
 from ..account_info import AccountInfo
-
 from ..addressable_account import AddressableAccount
+from ..enums import Version
 from .aggregator import Aggregator
 from .basket_token import BasketToken
-from .index import Index
 from .constants import DEFAULT_TOKENFILE_NAME
-
+from .index import Index
 from .mango_account_flags import MangoAccountFlags
-from .market_metadata import MarketMetadata
-from .mango_market import MarketLookup, CompoundMarketLookup
+from .mango_market import CompoundMarketLookup, MarketLookup
 from .mango_spot_market import SpotMarketLookup
+from .market_metadata import MarketMetadata
 from .token import SolToken, Token, TokenLookup
 from .token_value import TokenValue
-from ..enums import Version
 
 
 class Group(AddressableAccount):

@@ -1,6 +1,7 @@
 import json
-import typing
 import os
+import typing
+
 from solana.publickey import PublicKey
 
 cluster = os.environ.get("CLUSTER") or "mainnet-beta"

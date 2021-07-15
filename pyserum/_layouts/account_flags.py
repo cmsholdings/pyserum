@@ -1,4 +1,4 @@
-from construct import BitsInteger, BitsSwapped, BitStruct, Const, Padding, Flag  # type: ignore
+from construct import BitsInteger, BitsSwapped, BitStruct, Const, Flag, Padding  # type: ignore
 
 # We will use a bitstruct with 64 bits instead of the widebits implementation in serum-js.
 SERUM_ACCOUNT_FLAGS_LAYOUT = BitsSwapped(  # Swap to little endian

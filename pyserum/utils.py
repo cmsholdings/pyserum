@@ -1,5 +1,6 @@
 import base64
 import typing
+
 import base58
 from solana.publickey import PublicKey
 from solana.rpc.api import Client

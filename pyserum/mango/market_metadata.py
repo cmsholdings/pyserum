@@ -1,14 +1,11 @@
 import logging
-
 from decimal import Decimal
 
-from solana.rpc.api import Client
 from solana.publickey import PublicKey
+from solana.rpc.api import Client
 
 from ..market import Market as PySerumMarket
-
 from .basket_token import BasketToken
-
 from .mango_market import Market
 from .mango_spot_market import SpotMarket
 

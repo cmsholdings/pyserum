@@ -1,5 +1,6 @@
 import construct
-from .adapters import PublicKeyAdapter, DecimalAdapter, DatetimeAdapter
+
+from .adapters import DatetimeAdapter, DecimalAdapter, PublicKeyAdapter
 
 AGGREGATOR_CONFIG = construct.Struct(
     "description" / construct.PaddedString(32, "utf8"),

@@ -6,7 +6,6 @@ from solana.publickey import PublicKey
 from .index import Index
 from .token import Token
 
-
 # # 🥭 BasketToken class
 #
 # `BasketToken` defines aspects of `Token`s that are part of a `Group` basket.

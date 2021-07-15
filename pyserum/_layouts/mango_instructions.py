@@ -1,4 +1,5 @@
 import construct
+
 from .adapters import DecimalAdapter, FloatAdapter
 
 # # Instruction Structs

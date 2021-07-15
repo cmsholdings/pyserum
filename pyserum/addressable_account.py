@@ -5,7 +5,6 @@ from solana.publickey import PublicKey
 
 from .account_info import AccountInfo
 
-
 # # 🥭 AddressableAccount class
 #
 # Some of our most-used objects (like `Group` or `MarginAccount`) are accounts on Solana

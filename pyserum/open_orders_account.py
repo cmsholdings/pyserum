@@ -12,8 +12,8 @@ from solana.transaction import TransactionInstruction
 
 from ._layouts.account_flags import SERUM_ACCOUNT_FLAGS_LAYOUT
 from ._layouts.open_orders import OPEN_ORDERS_LAYOUT
-from .addressable_account import AddressableAccount
 from .account_info import AccountInfo
+from .addressable_account import AddressableAccount
 from .enums import Version
 from .instructions import SERUM_V3_DEX_PROGRAM_ID
 from .market.state import MarketState

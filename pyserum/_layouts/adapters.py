@@ -1,6 +1,7 @@
-from decimal import Decimal
 import datetime
 import typing
+from decimal import Decimal
+
 import construct
 from solana.publickey import PublicKey
 

@@ -1,14 +1,13 @@
 import logging
 import typing
-
 from decimal import Decimal
+
 from solana.publickey import PublicKey
 from solana.rpc.api import Client
 from solana.rpc.commitment import Commitment
 from solana.rpc.types import TokenAccountOpts
 
 from .token import Token
-
 
 # # 🥭 TokenValue class
 #

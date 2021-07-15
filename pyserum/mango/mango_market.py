@@ -6,7 +6,6 @@ from solana.publickey import PublicKey
 
 from .token import Token
 
-
 # # 🥭 Market class
 #
 # This class describes a crypto market. It *must* have a base token and a quote token.

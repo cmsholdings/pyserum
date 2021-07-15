@@ -1,6 +1,8 @@
-import typing
 import itertools
+import typing
+
 import construct
+
 from .account_flags import MANGO_ACCOUNT_FLAGS
 from .adapters import DecimalAdapter, FloatAdapter, PublicKeyAdapter
 

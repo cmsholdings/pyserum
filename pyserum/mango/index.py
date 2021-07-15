@@ -1,13 +1,11 @@
 import datetime
 import logging
-
 from decimal import Decimal
 
 from .._layouts.mango_index import INDEX
+from ..enums import Version
 from .token import Token
 from .token_value import TokenValue
-from ..enums import Version
-
 
 # # 🥭 Index class
 #

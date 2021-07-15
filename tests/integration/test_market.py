@@ -4,9 +4,9 @@ import pytest
 from solana.account import Account
 from solana.publickey import PublicKey
 from solana.rpc.api import Client
+from solana.rpc.commitment import Commitment
 from solana.rpc.types import TxOpts
 from spl.token.client import TokenAccountOpts
-from solana.rpc.commitment import Commitment
 
 from pyserum.enums import OrderType, Side
 from pyserum.market import Market

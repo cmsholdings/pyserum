@@ -1,5 +1,6 @@
 import logging
 import typing
+
 from .._layouts import account_flags as layouts
 from ..enums import Version
 

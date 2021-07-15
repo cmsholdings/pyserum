@@ -1,14 +1,13 @@
 import json
 import logging
-import typing
 import os
-
+import typing
 from decimal import Decimal
+
 import requests
 from solana.publickey import PublicKey
 
 from .constants import DEFAULT_TOKEN_URL, SOL_DECIMALS, SOL_MINT_ADDRESS
-
 
 # # 🥭 Token class
 #

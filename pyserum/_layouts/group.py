@@ -43,7 +43,7 @@
 import construct
 
 from pyserum._layouts.account_flags import MANGO_ACCOUNT_FLAGS
-from pyserum._layouts.adapters import PublicKeyAdapter, DecimalAdapter, FloatAdapter
+from pyserum._layouts.adapters import DecimalAdapter, FloatAdapter, PublicKeyAdapter
 from pyserum._layouts.mango_index import INDEX
 
 GROUP_V1_NUM_TOKENS = 3
@@ -68,7 +68,7 @@ GROUP_V1 = construct.Struct(
     "borrow_limits" / construct.Array(GROUP_V1_NUM_TOKENS, DecimalAdapter()),
     "mint_decimals" / construct.Array(GROUP_V1_NUM_TOKENS, DecimalAdapter(1)),
     "oracle_decimals" / construct.Array(GROUP_V1_NUM_MARKETS, DecimalAdapter(1)),
-    "padding" / construct.Array(GROUP_V1_PADDING, construct.Padding(1))
+    "padding" / construct.Array(GROUP_V1_PADDING, construct.Padding(1)),
 )
 
 
@@ -142,6 +142,5 @@ GROUP_V2 = construct.Struct(
     "borrow_limits" / construct.Array(GROUP_V2_NUM_TOKENS, DecimalAdapter()),
     "mint_decimals" / construct.Array(GROUP_V2_NUM_TOKENS, DecimalAdapter(1)),
     "oracle_decimals" / construct.Array(GROUP_V2_NUM_MARKETS, DecimalAdapter(1)),
-    "padding" / construct.Array(GROUP_V2_PADDING, construct.Padding(1))
+    "padding" / construct.Array(GROUP_V2_PADDING, construct.Padding(1)),
 )
-
