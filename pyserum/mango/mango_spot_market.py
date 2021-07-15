@@ -59,6 +59,7 @@ class SpotMarketLookup(MarketLookup):
 
     @staticmethod
     def load(token_data_filename: str) -> "SpotMarketLookup":
+
         with open(token_data_filename) as json_file:
             token_data = json.load(json_file)
             return SpotMarketLookup(token_data)
@@ -76,7 +77,12 @@ class SpotMarketLookup(MarketLookup):
         if found_token_data is None:
             raise Exception(f"Could not find data for token symbol '{symbol}'.")
 
-        return Token(symbol, found_token_data["name"], PublicKey(found_token_data["address"]), Decimal(found_token_data["decimals"]))
+        return Token(
+            symbol,
+            found_token_data["name"],
+            PublicKey(found_token_data["address"]),
+            Decimal(found_token_data["decimals"]),
+        )
 
     def find_by_symbol(self, symbol: str) -> typing.Optional[Market]:
         base_symbol, quote_symbol = symbol.split("/")
@@ -84,15 +90,17 @@ class SpotMarketLookup(MarketLookup):
         if base_data is None:
             self.logger.warning(f"Could not find data for base token '{base_symbol}'")
             return None
-        base = Token(base_data["symbol"], base_data["name"], PublicKey(
-            base_data["address"]), Decimal(base_data["decimals"]))
+        base = Token(
+            base_data["symbol"], base_data["name"], PublicKey(base_data["address"]), Decimal(base_data["decimals"])
+        )
 
         quote_data = SpotMarketLookup._find_data_by_symbol(quote_symbol, self.token_data)
         if quote_data is None:
             self.logger.warning(f"Could not find data for quote token '{quote_symbol}'")
             return None
-        quote = Token(quote_data["symbol"], quote_data["name"], PublicKey(
-            quote_data["address"]), Decimal(quote_data["decimals"]))
+        quote = Token(
+            quote_data["symbol"], quote_data["name"], PublicKey(quote_data["address"]), Decimal(quote_data["decimals"])
+        )
 
         if "extensions" not in base_data:
             self.logger.warning(f"No markets found for base token '{base.symbol}'.")
@@ -114,7 +122,9 @@ class SpotMarketLookup(MarketLookup):
             market_address = PublicKey(market_address_string)
         else:
             self.logger.warning(
-                f"Could not find market with quote token '{quote.symbol}'. Only markets based on USDC or USDT are supported.")
+                f"Could not find market with quote token: \
+                '{quote.symbol}'. Only markets based on USDC or USDT are supported."
+            )
             return None
 
         return SpotMarket(base, quote, market_address)
@@ -127,25 +137,41 @@ class SpotMarketLookup(MarketLookup):
                     if token_data["extensions"]["serumV3Usdc"] == address_string:
                         market_address_string = token_data["extensions"]["serumV3Usdc"]
                         market_address = PublicKey(market_address_string)
-                        base = Token(token_data["symbol"], token_data["name"], PublicKey(
-                            token_data["address"]), Decimal(token_data["decimals"]))
+                        base = Token(
+                            token_data["symbol"],
+                            token_data["name"],
+                            PublicKey(token_data["address"]),
+                            Decimal(token_data["decimals"]),
+                        )
                         quote_data = SpotMarketLookup._find_data_by_symbol("USDC", self.token_data)
                         if quote_data is None:
                             raise Exception("Could not load token data for USDC (which should always be present).")
-                        quote = Token(quote_data["symbol"], quote_data["name"], PublicKey(
-                            quote_data["address"]), Decimal(quote_data["decimals"]))
+                        quote = Token(
+                            quote_data["symbol"],
+                            quote_data["name"],
+                            PublicKey(quote_data["address"]),
+                            Decimal(quote_data["decimals"]),
+                        )
                         return SpotMarket(base, quote, market_address)
                 if "serumV3Usdt" in token_data["extensions"]:
                     if token_data["extensions"]["serumV3Usdt"] == address_string:
                         market_address_string = token_data["extensions"]["serumV3Usdt"]
                         market_address = PublicKey(market_address_string)
-                        base = Token(token_data["symbol"], token_data["name"], PublicKey(
-                            token_data["address"]), Decimal(token_data["decimals"]))
+                        base = Token(
+                            token_data["symbol"],
+                            token_data["name"],
+                            PublicKey(token_data["address"]),
+                            Decimal(token_data["decimals"]),
+                        )
                         quote_data = SpotMarketLookup._find_data_by_symbol("USDT", self.token_data)
                         if quote_data is None:
                             raise Exception("Could not load token data for USDT (which should always be present).")
-                        quote = Token(quote_data["symbol"], quote_data["name"], PublicKey(
-                            quote_data["address"]), Decimal(quote_data["decimals"]))
+                        quote = Token(
+                            quote_data["symbol"],
+                            quote_data["name"],
+                            PublicKey(quote_data["address"]),
+                            Decimal(quote_data["decimals"]),
+                        )
                         return SpotMarket(base, quote, market_address)
         return None
 
@@ -159,15 +185,22 @@ class SpotMarketLookup(MarketLookup):
                 if "serumV3Usdc" in token_data["extensions"]:
                     market_address_string = token_data["extensions"]["serumV3Usdc"]
                     market_address = PublicKey(market_address_string)
-                    base = Token(token_data["symbol"], token_data["name"], PublicKey(
-                        token_data["address"]), Decimal(token_data["decimals"]))
+                    base = Token(
+                        token_data["symbol"],
+                        token_data["name"],
+                        PublicKey(token_data["address"]),
+                        Decimal(token_data["decimals"]),
+                    )
                     all_markets += [SpotMarket(base, usdc, market_address)]
                 if "serumV3Usdt" in token_data["extensions"]:
                     market_address_string = token_data["extensions"]["serumV3Usdt"]
                     market_address = PublicKey(market_address_string)
-                    base = Token(token_data["symbol"], token_data["name"], PublicKey(
-                        token_data["address"]), Decimal(token_data["decimals"]))
+                    base = Token(
+                        token_data["symbol"],
+                        token_data["name"],
+                        PublicKey(token_data["address"]),
+                        Decimal(token_data["decimals"]),
+                    )
                     all_markets += [SpotMarket(base, usdt, market_address)]
 
         return all_markets
-

@@ -24,6 +24,9 @@ tests/crank.log
 serum_dex.so
 crank
 
+# local docker volume
+data-vol/*
+
 # sphinx stuff
 _build
 make.bat

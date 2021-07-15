@@ -12,8 +12,11 @@ from ..enums import Version
 # # 🥭 Index class
 #
 
+
 class Index:
-    def __init__(self, version: Version, token: Token, last_update: datetime.datetime, borrow: TokenValue, deposit: TokenValue):
+    def __init__(
+        self, version: Version, token: Token, last_update: datetime.datetime, borrow: TokenValue, deposit: TokenValue
+    ):
         self.logger: logging.Logger = logging.getLogger(self.__class__.__name__)
         self.version: Version = version
         self.token: Token = token
@@ -34,4 +37,3 @@ class Index:
 
     def __repr__(self) -> str:
         return f"{self}"
-

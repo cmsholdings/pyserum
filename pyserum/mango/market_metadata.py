@@ -3,9 +3,9 @@ import logging
 from decimal import Decimal
 
 from solana.rpc.api import Client
-
-from pyserum.market import Market as PySerumMarket
 from solana.publickey import PublicKey
+
+from ..market import Market as PySerumMarket
 
 from .basket_token import BasketToken
 
@@ -17,8 +17,16 @@ from .mango_spot_market import SpotMarket
 
 
 class MarketMetadata:
-    def __init__(self, name: str, address: PublicKey, base: BasketToken, quote: BasketToken,
-                 spot: Market, oracle: PublicKey, decimals: Decimal):
+    def __init__(
+        self,
+        name: str,
+        address: PublicKey,
+        base: BasketToken,
+        quote: BasketToken,
+        spot: Market,
+        oracle: PublicKey,
+        decimals: Decimal,
+    ):
         self.logger: logging.Logger = logging.getLogger(self.__class__.__name__)
         self.name: str = name
         self.address: PublicKey = address

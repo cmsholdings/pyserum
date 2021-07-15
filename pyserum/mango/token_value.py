@@ -1,4 +1,3 @@
-
 import logging
 import typing
 
@@ -17,6 +16,7 @@ from .token import Token
 # displaying them nicely consistently.
 #
 
+
 class TokenValue:
     def __init__(self, token: Token, value: Decimal):
         self.logger: logging.Logger = logging.getLogger(self.__class__.__name__)
@@ -24,12 +24,12 @@ class TokenValue:
         self.value = value
 
     @staticmethod
-    def fetch_total_value_or_none(conn: Client, commitment: Commitment, account_public_key: PublicKey, token: Token) \
-            -> typing.Optional["TokenValue"]:
+    def fetch_total_value_or_none(
+        conn: Client, commitment: Commitment, account_public_key: PublicKey, token: Token
+    ) -> typing.Optional["TokenValue"]:
         opts = TokenAccountOpts(mint=token.mint)
 
-        token_accounts_response = conn.get_token_accounts_by_owner(
-            account_public_key, opts, commitment=commitment)
+        token_accounts_response = conn.get_token_accounts_by_owner(account_public_key, opts, commitment=commitment)
         token_accounts = token_accounts_response["result"]["value"]
         if len(token_accounts) == 0:
             return None
@@ -45,10 +45,12 @@ class TokenValue:
         return TokenValue(token, total_value)
 
     @staticmethod
-    def fetch_total_value(conn: Client, commitment: Commitment, account_public_key: PublicKey, token: Token)\
-            -> "TokenValue":
-        value = TokenValue.fetch_total_value_or_none(conn=conn, commitment=commitment,
-                                                     account_public_key=account_public_key, token=token)
+    def fetch_total_value(
+        conn: Client, commitment: Commitment, account_public_key: PublicKey, token: Token
+    ) -> "TokenValue":
+        value = TokenValue.fetch_total_value_or_none(
+            conn=conn, commitment=commitment, account_public_key=account_public_key, token=token
+        )
         if value is None:
             return TokenValue(token, Decimal(0))
         return value

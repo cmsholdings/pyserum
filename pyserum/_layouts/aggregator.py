@@ -13,7 +13,8 @@ AGGREGATOR_CONFIG = construct.Struct(
 
 # ## ROUND
 #
-# Here's the [Flux Rust structure](https://github.com/blockworks-foundation/solana-flux-aggregator/blob/master/program/src/state.rs):
+# Here's the [Flux Rust structure]
+# (https://github.com/blockworks-foundation/solana-flux-aggregator/blob/master/program/src/state.rs):
 # ```
 # #[derive(Clone, Debug, BorshSerialize, BorshDeserialize, BorshSchema, Default, PartialEq)]
 # pub struct Round {
@@ -24,12 +25,15 @@ AGGREGATOR_CONFIG = construct.Struct(
 # ```
 
 
-ROUND = construct.Struct("id" / DecimalAdapter(), "created_at" / DecimalAdapter(), "updated_at" / DecimalAdapter())
+ROUND = construct.Struct(
+    "entity_id" / DecimalAdapter(), "created_at" / DecimalAdapter(), "updated_at" / DecimalAdapter()
+)
 
 
 # ## ANSWER
 #
-# Here's the [Flux Rust structure](https://github.com/blockworks-foundation/solana-flux-aggregator/blob/master/program/src/state.rs):
+# Here's the [Flux Rust structure]
+# (https://github.com/blockworks-foundation/solana-flux-aggregator/blob/master/program/src/state.rs):
 # ```
 # #[derive(Clone, Debug, BorshSerialize, BorshDeserialize, BorshSchema, Default, PartialEq)]
 # pub struct Answer {
@@ -50,7 +54,8 @@ ANSWER = construct.Struct(
 
 # ## AGGREGATOR
 #
-# Here's the [Flux Rust structure](https://github.com/blockworks-foundation/solana-flux-aggregator/blob/master/program/src/state.rs):
+# Here's the [Flux Rust structure]
+# (https://github.com/blockworks-foundation/solana-flux-aggregator/blob/master/program/src/state.rs):
 # ```
 # #[derive(Clone, Debug, BorshSerialize, BorshDeserialize, BorshSchema, Default, PartialEq)]
 # pub struct Aggregator {

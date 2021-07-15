@@ -1,4 +1,3 @@
-
 # ## INDEX
 #
 # Here's the [Mango Rust structure](https://github.com/blockworks-foundation/mango/blob/master/program/src/state.rs):
@@ -15,11 +14,4 @@ import construct
 
 from pyserum._layouts.adapters import DatetimeAdapter, FloatAdapter
 
-INDEX = construct.Struct(
-    "last_update" / DatetimeAdapter(),
-    "borrow" / FloatAdapter(),
-    "deposit" / FloatAdapter()
-)
-
-
-
+INDEX = construct.Struct("last_update" / DatetimeAdapter(), "borrow" / FloatAdapter(), "deposit" / FloatAdapter())

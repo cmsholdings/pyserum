@@ -46,10 +46,12 @@ class AggregatorConfig:
         )
 
     def __str__(self) -> str:
-        return f"« AggregatorConfig: '{self.description}', " \
-               f"Decimals: {self.decimals} [restart delay: {self.restart_delay}], " \
-               f"Max: {self.max_submissions}, Min: {self.min_submissions}, " \
-               f"Reward: {self.reward_amount}, Reward Account: {self.reward_token_account} »"
+        return (
+            f"« AggregatorConfig: '{self.description}', "
+            f"Decimals: {self.decimals} [restart delay: {self.restart_delay}], "
+            f"Max: {self.max_submissions}, Min: {self.min_submissions}, "
+            f"Reward: {self.reward_amount}, Reward Account: {self.reward_token_account} »"
+        )
 
     def __repr__(self) -> str:
         return f"{self}"
@@ -60,20 +62,21 @@ class AggregatorConfig:
 
 
 class Round:
-    def __init__(self, version: Version, entity_id: Decimal,
-                 created_at: datetime.datetime, updated_at: datetime.datetime):
+    def __init__(
+        self, version: Version, entity_id: Decimal, created_at: datetime.datetime, updated_at: datetime.datetime
+    ):
         self.logger: logging.Logger = logging.getLogger(self.__class__.__name__)
         self.version: Version = version
-        self.id: Decimal = entity_id
+        self.entity_id: Decimal = entity_id
         self.created_at: datetime.datetime = created_at
         self.updated_at: datetime.datetime = updated_at
 
     @staticmethod
     def from_layout(layout: ROUND) -> "Round":
-        return Round(Version.UNSPECIFIED, layout.id, layout.created_at, layout.updated_at)
+        return Round(Version.UNSPECIFIED, layout.entity_id, layout.created_at, layout.updated_at)
 
     def __str__(self) -> str:
-        return f"« Round[{self.id}], Created: {self.updated_at}, Updated: {self.updated_at} »"
+        return f"« Round[{self.entity_id}], Created: {self.updated_at}, Updated: {self.updated_at} »"
 
     def __repr__(self) -> str:
         return f"{self}"
@@ -104,9 +107,11 @@ class Answer:
         return Answer(Version.UNSPECIFIED, layout.round_id, layout.median, layout.created_at, layout.updated_at)
 
     def __str__(self) -> str:
-        return f"« Answer: Round[{self.round_id}], " \
-               f"Median: {self.median:,.8f}, " \
-               f"Created: {self.updated_at}, Updated: {self.updated_at} »"
+        return (
+            f"« Answer: Round[{self.round_id}], "
+            f"Median: {self.median:,.8f}, "
+            f"Created: {self.updated_at}, Updated: {self.updated_at} »"
+        )
 
     def __repr__(self) -> str:
         return f"{self}"
@@ -148,41 +153,42 @@ class Aggregator(AddressableAccount):
         return self.answer.median / (10 ** self.config.decimals)
 
     @staticmethod
-    def from_layout(layout: AGGREGATOR, account_info: AccountInfo, name: str) -> "Aggregator":
+    def from_layout(conn: Client, layout: AGGREGATOR, account_info: AccountInfo, name: str) -> "Aggregator":
         config = AggregatorConfig.from_layout(layout.config)
         initialized = bool(layout.initialized)
         round_ = Round.from_layout(layout.round)
         answer = Answer.from_layout(layout.answer)
 
         return Aggregator(
-            account_info,
-            Version.UNSPECIFIED,
-            config,
-            initialized,
-            name,
-            layout.owner,
-            round_,
-            layout.round_submissions,
-            answer,
-            layout.answer_submissions,
+            conn=conn,
+            account_info=account_info,
+            version=Version.UNSPECIFIED,
+            config=config,
+            initialized=initialized,
+            name=name,
+            owner=layout.owner,
+            round_=round_,
+            round_submissions=layout.round_submissions,
+            answer=answer,
+            answer_submissions=layout.answer_submissions,
         )
 
     @staticmethod
-    def parse(account_info: AccountInfo) -> "Aggregator":
+    def parse(conn: Client, account_info: AccountInfo) -> "Aggregator":
         data = account_info.data
         if len(data) != AGGREGATOR.sizeof():
             raise Exception(f"Data length ({len(data)}) does not match expected size ({AGGREGATOR.sizeof()})")
 
         name = mango_helpers.lookup_oracle_name(account_info.address)
         layout = AGGREGATOR.parse(data)
-        return Aggregator.from_layout(layout, account_info, name)
+        return Aggregator.from_layout(conn=conn, layout=layout, account_info=account_info, name=name)
 
     @staticmethod
     def load(conn: Client, account_address: PublicKey):
         account_info = AccountInfo.load(conn, account_address)
         if account_info is None:
             raise Exception(f"Aggregator account not found at address '{account_address}'")
-        return Aggregator.parse(account_info)
+        return Aggregator.parse(conn=conn, account_info=account_info)
 
     def __str__(self) -> str:
         return f"""

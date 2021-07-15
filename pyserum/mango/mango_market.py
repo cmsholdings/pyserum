@@ -12,6 +12,7 @@ from .token import Token
 # This class describes a crypto market. It *must* have a base token and a quote token.
 #
 
+
 class Market(metaclass=abc.ABCMeta):
     def __init__(self, base: Token, quote: Token):
         self.logger: logging.Logger = logging.getLogger(self.__class__.__name__)
@@ -67,4 +68,3 @@ class CompoundMarketLookup(MarketLookup):
 
     def all_markets(self) -> typing.Sequence[Market]:
         return [market for sublist in map(lambda lookup: lookup.all_markets(), self.lookups) for market in sublist]
-

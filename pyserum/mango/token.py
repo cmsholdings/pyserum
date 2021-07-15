@@ -1,18 +1,20 @@
-
 import json
 import logging
 import typing
+import os
 
 from decimal import Decimal
+import requests
 from solana.publickey import PublicKey
 
-from .constants import SOL_DECIMALS, SOL_MINT_ADDRESS
+from .constants import DEFAULT_TOKEN_URL, SOL_DECIMALS, SOL_MINT_ADDRESS
 
 
 # # 🥭 Token class
 #
 # `Token` defines aspects common to every token.
 #
+
 
 class Token:
     def __init__(self, symbol: str, name: str, mint: PublicKey, decimals: Decimal):
@@ -62,7 +64,7 @@ class Token:
 
     # TokenMetadatas are equal if they have the same mint address.
     def __eq__(self, other):
-        if hasattr(other, 'mint'):
+        if hasattr(other, "mint"):
             return self.mint == other.mint
         return False
 
@@ -75,7 +77,9 @@ class Token:
 
 # # 🥭 SolToken object
 #
-# It's sometimes handy to have a `Token` for SOL, but SOL isn't actually a token and can't appear in baskets. This object defines a special case for SOL.
+# It's sometimes handy to have a `Token` for SOL,
+# but SOL isn't actually a token and can't appear in baskets.
+# This object defines a special case for SOL.
 #
 
 
@@ -84,24 +88,12 @@ SolToken = Token("SOL", "Pure SOL", SOL_MINT_ADDRESS, SOL_DECIMALS)
 
 # # 🥭 TokenLookup class
 #
-# This class allows us to look up token symbols, names, mint addresses and decimals, all from our Solana static data.
-#
-# The static data is the [Solana token list](https://raw.githubusercontent.com/solana-labs/token-list/main/src/tokens/solana.tokenlist.json) provided by Serum.
-#
-# You can load a `TokenLookup` class by something like:
-# ```
-# with open("solana.tokenlist.json") as json_file:
-#     token_data = json.load(json_file)
-#     token_lookup = TokenLookup(token_data)
-# ```
-#
-# It's usually easiest to access it via the `Context` as `context.token_lookup`.
+# This class allows us to look up token symbols, names, mint addresses and decimals, all from Solana data.
+# by default, the json is downloaded from the DEFAULT_TOKEN_URL and saved for subsequent runs
 #
 
 
 class TokenLookup:
-    DEFAULT_FILE_NAME = "solana.tokenlist.json"
-
     @staticmethod
     def _find_data_by_symbol(symbol: str, token_data: typing.Dict) -> typing.Optional[typing.Dict]:
         for token in token_data["tokens"]:
@@ -143,8 +135,14 @@ class TokenLookup:
         return token
 
     @staticmethod
-    def load(filename: str) -> "TokenLookup":
+    def load(filename: str, get_if_not_exists=True) -> "TokenLookup":
+        if not os.path.exists(filename) or os.path.getsize(filename) == 0:
+            if get_if_not_exists:
+                response = json.loads(requests.get(DEFAULT_TOKEN_URL).text)
+                with open(filename, "w") as file_handle:
+                    json.dump(response, file_handle)
+            else:
+                raise FileNotFoundError
         with open(filename) as json_file:
             token_data = json.load(json_file)
             return TokenLookup(token_data)
-

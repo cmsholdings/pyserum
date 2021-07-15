@@ -17,7 +17,8 @@ MANGO_INSTRUCTION_VARIANT_FINDER = construct.Struct("variant" / construct.BytesI
 
 # ## Variant 0: INIT_MANGO_GROUP
 #
-# Instruction variant 1. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 1. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Initialize a group of lending pools that can be cross margined
 # ```
@@ -41,7 +42,8 @@ INIT_MANGO_GROUP = construct.Struct(
 
 # ## Variant 1: INIT_MARGIN_ACCOUNT
 #
-# Instruction variant 1. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 1. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Initialize a margin account for a user
 # ```
@@ -56,7 +58,8 @@ INIT_MARGIN_ACCOUNT = construct.Struct(
 
 # ## Variant 2: DEPOSIT
 #
-# Instruction variant 2. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 2. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Deposit funds into margin account to be used as collateral and earn interest.
 # ```
@@ -73,7 +76,8 @@ DEPOSIT = construct.Struct(
 
 # ## Variant 3: WITHDRAW
 #
-# Instruction variant 3. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 3. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Withdraw funds that were deposited earlier.
 # ```
@@ -90,7 +94,8 @@ WITHDRAW = construct.Struct(
 
 # ## Variant 4: BORROW
 #
-# Instruction variant 4. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 4. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Borrow by incrementing MarginAccount.borrows given collateral ratio is below init_coll_rat
 # ```
@@ -110,7 +115,8 @@ BORROW = construct.Struct(
 
 # ## Variant 5: SETTLE_BORROW
 #
-# Instruction variant 5. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 5. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Use this token's position and deposit to reduce borrows
 # ```
@@ -130,7 +136,8 @@ SETTLE_BORROW = construct.Struct(
 
 # ## Variant 6: LIQUIDATE
 #
-# Instruction variant 6. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 6. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Take over a MarginAccount that is below init_coll_ratio by depositing funds
 # ```
@@ -150,7 +157,8 @@ LIQUIDATE = construct.Struct(
 
 # ## Variant 7: DEPOSIT_SRM
 #
-# Instruction variant 7. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 7. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Deposit SRM into the SRM vault for MangoGroup
 # >
@@ -171,7 +179,8 @@ DEPOSIT_SRM = construct.Struct(
 
 # ## Variant 8: WITHDRAW_SRM
 #
-# Instruction variant 8. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 8. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Withdraw SRM owed to this MarginAccount
 # ```
@@ -188,7 +197,8 @@ WITHDRAW_SRM = construct.Struct(
 
 # ## Variant 9: PLACE_ORDER
 #
-# Instruction variant 9. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 9. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Place an order on the Serum Dex using Mango margin facilities
 # ```
@@ -206,7 +216,8 @@ PLACE_ORDER = construct.Struct(
 
 # ## Variant 10: SETTLE_FUNDS
 #
-# Instruction variant 10. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 10. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Settle all funds from serum dex open orders into MarginAccount positions
 # ```
@@ -221,7 +232,8 @@ SETTLE_FUNDS = construct.Struct(
 
 # ## Variant 11: CANCEL_ORDER
 #
-# Instruction variant 11. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 11. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Cancel an order using dex instruction
 # ```
@@ -239,7 +251,8 @@ CANCEL_ORDER = construct.Struct(
 
 # ## Variant 12: CANCEL_ORDER_BY_CLIENT_ID
 #
-# Instruction variant 12. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 12. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Cancel an order using client_id
 # ```
@@ -256,7 +269,8 @@ CANCEL_ORDER_BY_CLIENT_ID = construct.Struct(
 
 # ## Variant 13: CHANGE_BORROW_LIMIT
 #
-# Instruction variant 13. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs).
+# Instruction variant 13. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs).
 #
 # > Change the borrow limit using admin key. This will not affect any open positions on any MarginAccount
 # >
@@ -278,7 +292,8 @@ CHANGE_BORROW_LIMIT = construct.Struct(
 
 # ## Variant 14: PLACE_AND_SETTLE
 #
-# Instruction variant 14. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs).
+# Instruction variant 14. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs).
 #
 # > Place an order on the Serum Dex and settle funds from the open orders account
 # ```
@@ -296,7 +311,8 @@ PLACE_AND_SETTLE = construct.Struct(
 
 # ## Variant 15: FORCE_CANCEL_ORDERS
 #
-# Instruction variant 15. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 15. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Allow a liquidator to cancel open orders and settle to recoup funds for partial liquidation
 #
@@ -316,7 +332,8 @@ FORCE_CANCEL_ORDERS = construct.Struct(
 
 # ## Variant 16: PARTIAL_LIQUIDATE
 #
-# Instruction variant 16. From the [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
+# Instruction variant 16. From the
+# [Rust source](https://github.com/blockworks-foundation/mango/blob/master/program/src/instruction.rs):
 #
 # > Take over a MarginAccount that is below init_coll_ratio by depositing funds
 #

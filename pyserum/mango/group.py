@@ -14,10 +14,12 @@ from ..addressable_account import AddressableAccount
 from .aggregator import Aggregator
 from .basket_token import BasketToken
 from .index import Index
+from .constants import DEFAULT_TOKENFILE_NAME
 
 from .mango_account_flags import MangoAccountFlags
 from .market_metadata import MarketMetadata
-from .mango_market import MarketLookup
+from .mango_market import MarketLookup, CompoundMarketLookup
+from .mango_spot_market import SpotMarketLookup
 from .token import SolToken, Token, TokenLookup
 from .token_value import TokenValue
 from ..enums import Version
@@ -81,6 +83,7 @@ class Group(AddressableAccount):
     #
     @staticmethod
     def from_layout(
+        conn: Client,
         layout: construct.Struct,
         name: str,
         account_info: AccountInfo,
@@ -132,27 +135,29 @@ class Group(AddressableAccount):
         init_coll_ratio = layout.init_coll_ratio.quantize(Decimal(".01"))
 
         return Group(
-            account_info,
-            version,
-            name,
-            account_flags,
-            basket_tokens,
-            markets,
-            layout.signer_nonce,
-            layout.signer_key,
-            layout.dex_program_id,
-            total_deposits,
-            total_borrows,
-            maint_coll_ratio,
-            init_coll_ratio,
-            layout.srm_vault,
-            layout.admin,
-            borrow_limits,
+            conn=conn,
+            account_info=account_info,
+            version=version,
+            name=name,
+            account_flags=account_flags,
+            basket_tokens=basket_tokens,
+            markets=markets,
+            signer_nonce=layout.signer_nonce,
+            signer_key=layout.signer_key,
+            dex_program_id=layout.dex_program_id,
+            total_deposits=total_deposits,
+            total_borrows=total_borrows,
+            maint_coll_ratio=maint_coll_ratio,
+            init_coll_ratio=init_coll_ratio,
+            srm_vault=layout.srm_vault,
+            admin=layout.admin,
+            borrow_limits=borrow_limits,
         )
 
     @staticmethod
-    def parse(account_info: AccountInfo, group_name: str, token_lookup: TokenLookup, market_lookup: MarketLookup) \
-            -> "Group":
+    def parse(
+        conn: Client, account_info: AccountInfo, group_name: str, token_lookup: TokenLookup, market_lookup: MarketLookup
+    ) -> "Group":
         data = account_info.data
         if len(data) == GROUP_V1.sizeof():
             layout = GROUP_V1.parse(data)
@@ -162,19 +167,26 @@ class Group(AddressableAccount):
             layout = GROUP_V2.parse(data)
         else:
             raise Exception(
-                f"Group data length ({len(data)}) does not match expected size ({GROUP_V1.sizeof()} or {GROUP_V2.sizeof()})"
+                f"Group data length ({len(data)}) does not match expected size \
+                ({GROUP_V1.sizeof()} or {GROUP_V2.sizeof()})"
             )
 
-        return Group.from_layout(
-            layout, group_name, account_info, version, token_lookup, market_lookup
-        )
+        return Group.from_layout(conn, layout, group_name, account_info, version, token_lookup, market_lookup)
 
     @staticmethod
-    def load(conn: Client, group_id: PublicKey):
+    def load(conn: Client, group_name: str, group_id: PublicKey, token_filename: str = DEFAULT_TOKENFILE_NAME):
         account_info = AccountInfo.load(conn, group_id)
+        token_lookup = TokenLookup.load(token_filename)
+        market_lookup: MarketLookup = CompoundMarketLookup([SpotMarketLookup.load(token_filename)])
         if account_info is None:
             raise Exception(f"Group account not found at address '{group_id}'")
-        return Group.parse(conn, account_info)
+        return Group.parse(
+            conn=conn,
+            account_info=account_info,
+            group_name=group_name,
+            token_lookup=token_lookup,
+            market_lookup=market_lookup,
+        )
 
     def price_index_of_token(self, token: Token) -> int:
         for index, existing in enumerate(self.basket_tokens):
@@ -204,8 +216,10 @@ class Group(AddressableAccount):
         return token_prices
 
     @staticmethod
-    def load_with_prices(conn: Client, group_id: PublicKey) -> typing.Tuple["Group", typing.List[TokenValue]]:
-        group = Group.load(conn, group_id)
+    def load_with_prices(
+        conn: Client, group_name: str, group_id: PublicKey, token_filename: str = DEFAULT_TOKENFILE_NAME
+    ) -> typing.Tuple["Group", typing.List[TokenValue]]:
+        group = Group.load(conn=conn, group_name=group_name, group_id=group_id, token_filename=token_filename)
         prices = group.fetch_token_prices(conn)
         return group, prices
 
@@ -215,8 +229,9 @@ class Group(AddressableAccount):
         balances += [TokenValue(SolToken, sol_balance)]
 
         for basket_token in self.basket_tokens:
-            balance = TokenValue.fetch_total_value(conn=self.conn, commitment=commitment,
-                                                   account_public_key=root_address, token=basket_token.token)
+            balance = TokenValue.fetch_total_value(
+                conn=self.conn, commitment=commitment, account_public_key=root_address, token=basket_token.token
+            )
             balances += [balance]
         return balances
 
